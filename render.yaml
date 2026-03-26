@@ -2,6 +2,6 @@ services:
   - type: web
     name: coracao-gaucho-backend
     env: node
-    buildCommand: rm -rf node_modules package-lock.json && npm install && npx prisma generate && npm run build
+    buildCommand: npm install && chmod +x node_modules/.bin/prisma && npx prisma generate && npm run build
     startCommand: npm run start
     preDeployCommand: npx prisma migrate deploy
