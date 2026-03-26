@@ -11,6 +11,7 @@ import { openApiDocument } from "./docs/openapi.js";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
+
 const allowedOrigins = [
   process.env.CORS_ORIGIN,
   process.env.FRONTEND_URL,
@@ -36,6 +37,7 @@ app.use(
 
 app.use(helmet());
 app.use(cookieParser());
+
 app.use((req, _res, next) => {
   req.rawBody = "";
   next();
@@ -50,9 +52,11 @@ app.use(
     },
   }),
 );
+
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.resolve(process.cwd(), "uploads")));
+
 app.use(
   "/docs",
   swaggerUi.serve,
@@ -61,13 +65,21 @@ app.use(
     customSiteTitle: "Coração Gaúcho API Docs",
   }),
 );
-app.get("/docs.json", (_req, res) => res.json(openApiDocument));
+
+app.get("/", (_req, res) => {
+  return res.status(200).send("API Coração Gaúcho online");
+});
 
 app.get("/health", (_req, res) => {
   return res.json({ success: true, message: "API online" });
 });
 
+app.get("/docs.json", (_req, res) => {
+  return res.json(openApiDocument);
+});
+
 app.use("/api", routes);
+
 app.use(notFoundHandler);
 app.use(errorHandler);
 
