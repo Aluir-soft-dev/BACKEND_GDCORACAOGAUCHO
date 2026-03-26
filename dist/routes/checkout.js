@@ -1,0 +1,17 @@
+import { Router } from "express";
+import { CheckoutEventoController } from "../controllers/checkoutEventoController.js";
+import { CheckoutCursoController } from "../controllers/checkoutCursoController.js";
+import { StatusController } from "../controllers/statusController.js";
+import { requireAuth } from "../middlewares/auth.js";
+import { requireRole } from "../middlewares/requireRole.js";
+import { validate } from "../middlewares/validate.js";
+import { checkoutCursoSchema, checkoutEventoSchema, updateIngressoStatusSchema, updateInscricaoStatusSchema, } from "../schemas/checkout.schema.js";
+const router = Router();
+const evento = new CheckoutEventoController();
+const curso = new CheckoutCursoController();
+const status = new StatusController();
+router.post("/checkout/evento", requireAuth, requireRole("USER", "ADMIN", "STAFF"), validate(checkoutEventoSchema), (req, res, next) => evento.checkoutEvento(req, res).catch(next));
+router.post("/checkout/curso", requireAuth, requireRole("USER", "ADMIN", "STAFF"), validate(checkoutCursoSchema), (req, res, next) => curso.checkoutCurso(req, res).catch(next));
+router.put("/ingresso/:id/status", requireAuth, requireRole("ADMIN", "STAFF"), validate(updateIngressoStatusSchema), (req, res, next) => status.ingresso(req, res).catch(next));
+router.put("/inscricao/:id/status", requireAuth, requireRole("ADMIN", "STAFF"), validate(updateInscricaoStatusSchema), (req, res, next) => status.inscricao(req, res).catch(next));
+export default router;

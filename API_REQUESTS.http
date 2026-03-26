@@ -1,0 +1,457 @@
+### Coração Gaúcho API - Exemplos de Requisições
+### Use com REST Client extension (VS Code)
+
+@baseUrl = http://localhost:3333
+@email = joao@email.com
+@password = Senha@123
+
+###########################
+### HEALTH CHECK
+###########################
+
+### Verificar saúde da API
+GET {{baseUrl}}/health
+
+###########################
+### AUTENTICAÇÃO
+###########################
+
+### Sign Up - Registrar novo usuário
+POST {{baseUrl}}/api/auth/sign-up/email
+Content-Type: application/json
+
+{
+  "name": "João da Silva",
+  "email": "joao@email.com",
+  "password": "Senha@123",
+  "phone": "48999999999",
+  "cpf": "12345678900",
+  "endereco": "Rua A, 123",
+  "cidade": "Florianópolis",
+  "estado": "SC"
+}
+
+### Sign In - Fazer login
+POST {{baseUrl}}/api/auth/sign-in/email
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Get Session - Obter sessão atual
+GET {{baseUrl}}/api/auth/get-session
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Sign Out - Fazer logout
+POST {{baseUrl}}/api/auth/sign-out
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### PERFIL DO USUÁRIO
+###########################
+
+### Obter meu perfil
+GET {{baseUrl}}/api/usuario-perfil/me
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Atualizar meu perfil
+PUT {{baseUrl}}/api/usuario-perfil/me
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "João da Silva Updated",
+  "telefone": "48988888888",
+  "cpf": "12345678900",
+  "endereco": "Rua B, 456",
+  "cidade": "Florianópolis",
+  "estado": "SC",
+  "email": "joao@email.com",
+  "senha": "Senha@123"
+}
+
+### Obter perfil de outro usuário
+GET {{baseUrl}}/api/usuario-perfil/user_id_aqui
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### LOJA / MINHA CONTA
+###########################
+
+### Resumo da conta
+GET {{baseUrl}}/api/minha-conta/resumo
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Obter perfil da loja
+GET {{baseUrl}}/api/minha-conta/perfil
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Atualizar perfil da loja
+PUT {{baseUrl}}/api/minha-conta/perfil
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "João Silva Updated",
+  "telefone": "48988888888",
+  "cpf": "12345678900",
+  "endereco": "Rua C, 789",
+  "cidade": "Florianópolis",
+  "estado": "SC",
+  "email": "joao@email.com",
+  "senha": "Senha@123"
+}
+
+### Listar compras
+GET {{baseUrl}}/api/minha-conta/compras
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Listar ingressos
+GET {{baseUrl}}/api/minha-conta/ingressos
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Obter ingresso por ID
+GET {{baseUrl}}/api/minha-conta/ingressos/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Listar inscrições
+GET {{baseUrl}}/api/minha-conta/inscricoes
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Obter inscrição por ID
+GET {{baseUrl}}/api/minha-conta/inscricoes/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### CATEGORIAS
+###########################
+
+### Listar categorias (público)
+GET {{baseUrl}}/api/categorias
+
+### Criar categoria (requer ADMIN/STAFF)
+POST {{baseUrl}}/api/categorias
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Bombacha"
+}
+
+###########################
+### PRODUTOS
+###########################
+
+### Listar produtos (público)
+GET {{baseUrl}}/api/produtos
+
+### Obter produto por ID
+GET {{baseUrl}}/api/produtos/1
+
+### Criar produto (requer ADMIN/STAFF)
+POST {{baseUrl}}/api/produtos
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Camiseta Oficial Coração Gaúcho",
+  "quantidade": 50,
+  "preco": 79.90,
+  "descricao": "Camiseta oficial da marca com logo frontal",
+  "imagem": "/uploads/camiseta-oficial.jpg",
+  "categoria": "Vestuário",
+  "categoriaId": 1
+}
+
+### Atualizar produto (requer ADMIN/STAFF)
+PUT {{baseUrl}}/api/produtos/1
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Camiseta Oficial Coração Gaúcho - Atualizada",
+  "quantidade": 40,
+  "preco": 89.90,
+  "descricao": "Camiseta oficial da marca com logo frontal - Nova versão",
+  "imagem": "/uploads/camiseta-oficial-v2.jpg",
+  "categoria": "Vestuário",
+  "categoriaId": 1
+}
+
+### Deletar produto (requer ADMIN/STAFF)
+DELETE {{baseUrl}}/api/produtos/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### EVENTOS
+###########################
+
+### Listar eventos (público)
+GET {{baseUrl}}/api/eventos
+
+### Obter próximo evento
+GET {{baseUrl}}/api/eventos/proximo
+
+### Obter evento por ID
+GET {{baseUrl}}/api/eventos/1
+
+### Criar evento (requer ADMIN)
+POST {{baseUrl}}/api/eventos
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nomeEvento": "Festa do Divino 2025",
+  "local": "Praça Central - Florianópolis",
+  "data": "2025-06-15T20:00:00Z",
+  "descricao": "Celebração tradicional gaúcha com comidas típicas e bebidas regionais",
+  "atracao": "Banda Tradicional Gaúcha",
+  "preco": 50.00,
+  "imagens": ["/uploads/evento-divino-1.jpg", "/uploads/evento-divino-2.jpg"],
+  "status": "Ativo"
+}
+
+### Atualizar evento (requer ADMIN)
+PUT {{baseUrl}}/api/eventos/1
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nomeEvento": "Festa do Divino 2025 - Edição Especial",
+  "local": "Praça Central - Florianópolis",
+  "data": "2025-06-15T20:00:00Z",
+  "descricao": "Celebração tradicional gaúcha com comidas típicas e bebidas regionais",
+  "atracao": "Banda Tradicional Gaúcha + DJ ao vivo",
+  "preco": 60.00,
+  "imagens": ["/uploads/evento-divino-1.jpg", "/uploads/evento-divino-2.jpg"],
+  "status": "Ativo"
+}
+
+### Deletar evento (requer ADMIN)
+DELETE {{baseUrl}}/api/eventos/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### TURMAS/CURSOS
+###########################
+
+### Listar turmas (público)
+GET {{baseUrl}}/api/turmas
+
+### Listar cursos (público)
+GET {{baseUrl}}/api/cursos
+
+### Obter próxima turma
+GET {{baseUrl}}/api/turmas/proxima
+
+### Obter turma por ID
+GET {{baseUrl}}/api/turmas/1
+
+### Criar turma (requer ADMIN/STAFF)
+POST {{baseUrl}}/api/turmas
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Aula de Dança Gaúcha - Nível Iniciante",
+  "local": "Salão Cultural da Casa Gaúcha",
+  "dataHora": "2025-06-20T19:00:00Z",
+  "descricao": "Aprenda os passos tradicionais da dança gaúcha. Para iniciantes sem experiência prévia.",
+  "preco": 150.00,
+  "nivel": "Iniciante",
+  "imagens": ["/uploads/aula-danca-1.jpg"]
+}
+
+### Atualizar turma (requer ADMIN/STAFF)
+PUT {{baseUrl}}/api/turmas/1
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Aula de Dança Gaúcha - Nível Intermediário",
+  "local": "Salão Cultural da Casa Gaúcha",
+  "dataHora": "2025-06-27T19:00:00Z",
+  "descricao": "Aprofunde seus conhecimentos em dança gaúcha. Requer experiência básica.",
+  "preco": 180.00,
+  "nivel": "Intermediário",
+  "imagens": ["/uploads/aula-danca-2.jpg"]
+}
+
+### Deletar turma (requer ADMIN/STAFF)
+DELETE {{baseUrl}}/api/turmas/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### COLABORADORES
+###########################
+
+### Listar colaboradores (requer ADMIN)
+GET {{baseUrl}}/api/colaboradores
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Obter meus dados como colaborador
+GET {{baseUrl}}/api/colaboradores/me
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Criar colaborador (requer ADMIN)
+POST {{baseUrl}}/api/colaboradores
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva",
+  "email": "maria@coracaogaucho.com",
+  "senha": "SenhaForte@123",
+  "telefone": "48999888888",
+  "cpf": "98765432100",
+  "role": "STAFF",
+  "isActive": true
+}
+
+### Atualizar colaborador (requer ADMIN)
+PUT {{baseUrl}}/api/colaboradores/user_id_aqui
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva Updated",
+  "email": "maria.silva@coracaogaucho.com",
+  "telefone": "48999777777",
+  "cpf": "98765432100",
+  "role": "ADMIN",
+  "isActive": true
+}
+
+### Deletar colaborador (requer ADMIN)
+DELETE {{baseUrl}}/api/colaboradores/user_id_aqui
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### CHECKOUT
+###########################
+
+### Comprar ingresso de evento
+POST {{baseUrl}}/api/checkout/evento
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "eventoId": 1
+}
+
+### Comprar inscrição de curso
+POST {{baseUrl}}/api/checkout/curso
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "turmaId": 1,
+  "jaFoiAluno": false
+}
+
+###########################
+### STATUS DE INGRESSOS E INSCRIÇÕES
+###########################
+
+### Atualizar status do ingresso (requer ADMIN/STAFF)
+PUT {{baseUrl}}/api/ingresso/1/status
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "status": "confirmado"
+}
+
+### Atualizar status da inscrição (requer ADMIN/STAFF)
+PUT {{baseUrl}}/api/inscricao/1/status
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: application/json
+
+{
+  "status": "confirmado"
+}
+
+###########################
+### INGRESSOS
+###########################
+
+### Listar meus ingressos
+GET {{baseUrl}}/api/ingressos/me
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Listar ingressos de um usuário (requer ser o próprio usuário ou ADMIN)
+GET {{baseUrl}}/api/ingressos/usuario/user_id_aqui
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Obter ingresso por ID
+GET {{baseUrl}}/api/ingresso/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### INSCRIÇÕES
+###########################
+
+### Listar minhas inscrições
+GET {{baseUrl}}/api/inscricoes/me
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Listar inscrições de um usuário (requer ser o próprio usuário ou ADMIN)
+GET {{baseUrl}}/api/inscricoes/user_id_aqui
+Cookie: better-auth.session_token=seu_token_aqui
+
+### Obter inscrição por ID
+GET {{baseUrl}}/api/inscricao/1
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### DASHBOARD
+###########################
+
+### Obter indicadores administrativos
+GET {{baseUrl}}/api/dashboard
+Cookie: better-auth.session_token=seu_token_aqui
+
+###########################
+### UPLOAD
+###########################
+
+### Upload de arquivo único (requer ADMIN/STAFF)
+POST {{baseUrl}}/api/upload/single
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: multipart/form-data; boundary=----FormBoundary7MA4YWxkTrZu0gW
+
+------FormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="imagem.jpg"
+Content-Type: image/jpeg
+
+< ./imagem.jpg
+------FormBoundary7MA4YWxkTrZu0gW--
+
+### Upload de múltiplos arquivos (requer ADMIN/STAFF)
+POST {{baseUrl}}/api/upload/multiple
+Cookie: better-auth.session_token=seu_token_aqui
+Content-Type: multipart/form-data; boundary=----FormBoundary7MA4YWxkTrZu0gW
+
+------FormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="files"; filename="imagem1.jpg"
+Content-Type: image/jpeg
+
+< ./imagem1.jpg
+------FormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="files"; filename="imagem2.jpg"
+Content-Type: image/jpeg
+
+< ./imagem2.jpg
+------FormBoundary7MA4YWxkTrZu0gW--
+
+###########################
+### LISTAGEM PÚBLICA
+###########################
+
+### Listar eventos públicos
+GET {{baseUrl}}/api/eventos
+
+### Listar cursos públicos
+GET {{baseUrl}}/api/cursos

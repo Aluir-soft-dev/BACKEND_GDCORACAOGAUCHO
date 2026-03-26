@@ -1,0 +1,31 @@
+import { Router } from "express";
+import { UsuarioPerfilController } from "../controllers/usuarioPerfilController.js";
+import { requireAuth } from "../middlewares/auth.js";
+import { requireSelfOrRole } from "../middlewares/ownership.js";
+import { validate } from "../middlewares/validate.js";
+import { updateProfileSchema } from "../schemas/user.schema.js";
+
+const router = Router();
+const controller = new UsuarioPerfilController();
+
+router.get("/usuario-perfil/me", requireAuth, (req, res, next) =>
+  controller.buscarMeu(req, res).catch(next),
+);
+
+router.put("/usuario-perfil/me", requireAuth, validate(updateProfileSchema), (req, res, next) =>
+  controller.atualizarMeu(req, res).catch(next),
+);
+
+router.get("/usuario-perfil/:userId", requireAuth, requireSelfOrRole("ADMIN", "STAFF"), (req, res, next) =>
+  controller.buscar(req, res).catch(next),
+);
+
+router.put(
+  "/usuario-perfil/:userId",
+  requireAuth,
+  requireSelfOrRole("ADMIN", "STAFF"),
+  validate(updateProfileSchema),
+  (req, res, next) => controller.atualizar(req, res).catch(next),
+);
+
+export default router;

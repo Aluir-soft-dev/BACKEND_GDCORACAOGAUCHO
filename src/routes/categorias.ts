@@ -1,0 +1,13 @@
+import { Router } from "express";
+import * as controller from "../controllers/categoriasController.js";
+import { requireAuth } from "../middlewares/auth.js";
+import { requireRole } from "../middlewares/requireRole.js";
+import { validate } from "../middlewares/validate.js";
+import { createCategoriaSchema } from "../schemas/categoria.schema.js";
+
+const router = Router();
+
+router.get("/", controller.listar);
+router.post("/", requireAuth, requireRole("ADMIN", "STAFF"), validate(createCategoriaSchema), controller.criar);
+
+export default router;
