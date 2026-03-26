@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: coracao-gaucho-backend
+    env: node
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm run start
+    preDeployCommand: npx prisma migrate deploy
